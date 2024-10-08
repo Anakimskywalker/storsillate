@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STORSILLATE'S PAGE</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;  /* Stack elements vertically */
+            justify-content: center;  /* Center horizontally */
+            align-items: center;      /* Center vertically */
+            height: 100vh;           /* Full height of the viewport */
+            margin: 0;               /* Remove default margin */
+            background-color: #f0f0f0; /* Optional background color */
+            font-family: Arial, sans-serif; /* Optional font style */
+            overflow: hidden; /* Prevent scrollbar */
+            position: relative; /* Set body position */
+        }
+        h1 {
+            font-size: 3em; /* Optional font size */
+            color: #F70D1A;    /* Optional text color */
+            position: relative; /* Keep h1 in normal flow */
+            z-index: 10;    /* Position above fireworks */
+        }
+        img {
+            margin-top: 20px; /* Space between the text and the image */
+            max-width: 40%; /* Responsive image */
+            height: auto;    /* Maintain aspect ratio */
+            z-index: 10;    /* Position above fireworks */
+        }
+        canvas {
+            position: absolute; /* Position canvas absolutely */
+            top: 0;             /* Align to the top */
+            left: 0;            /* Align to the left */
+            width: 100%;        /* Full width */
+            height: 100%;       /* Full height */
+            pointer-events: none; /* Allow clicks through canvas */
+            z-index: 1;        /* Position below content */
+        }
+    </style>
+</head>
+<body>
+    <h1>STORSILLO GYMBRO</h1>
+  <img src="file:///C:/Users/kim.avenido/Downloads/PXL_20240917_133306671~2.jpg
+" alt="Placeholder Image">
+<h1>RISPETTO DI NESSUNO
+PAURA DI TUTTI</h1>
+
+    <!-- Fireworks Animation Script -->
+    <canvas id="fireworks"></canvas>
+    <script>
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function Firework(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.color = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
+            this.sparks = [];
+            for (let i = 0; i < 100; i++) {
+                this.sparks.push(new Spark(this));
+            }
+        }
+
+        function Spark(firework) {
+            this.x = firework.x;
+            this.y = firework.y;
+            this.size = Math.random() * 3 + 1;
+            this.speedX = (Math.random() - 0.5) * 10;
+            this.speedY = (Math.random() - 0.5) * 10;
+            this.life = 100;
+        }
+
+        Spark.prototype.update = function () {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.life--;
+        };
+
+        Spark.prototype.draw = function () {
+            ctx.fillStyle = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        };
+
+        const fireworks = [];
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            fireworks.forEach((firework, index) => {
+                firework.sparks.forEach((spark, sparkIndex) => {
+                    spark.update();
+                    spark.draw();
+                    if (spark.life <= 0) firework.sparks.splice(sparkIndex, 1);
+                });
+                if (firework.sparks.length === 0) fireworks.splice(index, 1);
+            });
+            requestAnimationFrame(animate);
+        }
+
+        function createFirework() {
+            const firework = new Firework(Math.random() * canvas.width, Math.random() * canvas.height);
+            fireworks.push(firework);
+        }
+
+        // Trigger fireworks when the page loads
+        window.onload = function () {
+            for (let i = 0; i < 10; i++) {
+                createFirework();
+            }
+            animate();
+        };
+    </script>
+</body>
+</html>
