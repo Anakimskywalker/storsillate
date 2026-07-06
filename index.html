@@ -41,13 +41,15 @@
         }
         
         img {
-            margin-top: 20px; /* Space between the text and the image */
-            width: 50%;       /* Smaller, responsive width for mobile/tablets */
-            max-width: 250px; /* Cap the size so it stays small on large desktop screens */
-            height: auto;     /* Maintain aspect ratio */
+            margin-top: 20px; 
+            margin-bottom: 20px;
+            /* Usiamo le em per proporzionarla al font di base */
+            width: 12em;       
+            max-width: 80%;   /* Impedisce all'immagine di uscire dallo schermo sui telefoni molto piccoli */
+            height: auto;     /* Mantiene le proporzioni dell'immagine */
             position: relative;
             z-index: 10;    /* Position above fireworks */
-            border-radius: 8px; /* Optional touch to make the image look clean */
+            border-radius: 8px; 
         }
         canvas {
             position: absolute; /* Position canvas absolutely */
@@ -58,8 +60,12 @@
             pointer-events: none; /* Allow clicks through canvas */
             z-index: 1;        /* Position below content */
         }
-    </style>
-</head>
-<body>
-    <h1>STORSILLO GYMBRO</h1>
-    <img src="
+
+        /* Regolazione per schermi piccoli: rimpicciolisce leggermente i testi e l'immagine di conseguenza */
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px; 
+            }
+            img {
+                width: 10em; /* Diventa ancora più piccolina e bilanciata sui telefoni */
+            }
