@@ -38,12 +38,12 @@
             position: relative; /* Keep h1 in normal flow */
             z-index: 10;    /* Position above fireworks */
             text-align: center;
-        } /* FIXED: Added missing closing brace here */
+        }
         
         img {
             margin-top: 20px; /* Space between the text and the image */
-            width: 90%;       /* Spans nicely across mobile screens */
-            max-width: 400px; /* Keeps it from getting too huge on desktop screens */
+            width: 50%;       /* Smaller, responsive width for mobile/tablets */
+            max-width: 250px; /* Cap the size so it stays small on large desktop screens */
             height: auto;     /* Maintain aspect ratio */
             position: relative;
             z-index: 10;    /* Position above fireworks */
@@ -62,89 +62,4 @@
 </head>
 <body>
     <h1>STORSILLO GYMBRO</h1>
-    <img src="https://github.com/Anakimskywalker/storsillate/blob/main/storsilloshimself.png?raw=true" alt="Image">
-    <h1>RISPETTO DI NESSUNO <br> PAURA DI TUTTI</h1>
-    
-    <h3>03/09/24 Sydney Caput Mundi</h3>
-    <h3>06/09/24 Cassano non è stupido è solo ignorante</h3>
-    <h3>30/08/24 è proprio vero sono un fallito, chiisà cosa penserà mia figlia di suo padre</h3>
-    
-    <h2>Please don't take my data</h2>
-    
-    <canvas id="fireworks"></canvas>
-    <script>
-        const canvas = document.getElementById('fireworks');
-        const ctx = canvas.getContext('2d');
-
-        // Dynamically adjust canvas to match full body scroll height
-        canvas.width = window.innerWidth;
-        canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
-        });
-
-        function Firework(x, y) {
-            this.x = x;
-            this.y = y;
-            this.size = Math.random() * 5 + 2;
-            this.color = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
-            this.sparks = [];
-            for (let i = 0; i < 100; i++) {
-                this.sparks.push(new Spark(this));
-            }
-        }
-
-        function Spark(firework) {
-            this.x = firework.x;
-            this.y = firework.y;
-            this.size = Math.random() * 3 + 1;
-            this.speedX = (Math.random() - 0.5) * 10;
-            this.speedY = (Math.random() - 0.5) * 10;
-            this.life = 100;
-        }
-
-        Spark.prototype.update = function () {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            this.life--;
-        };
-
-        Spark.prototype.draw = function () {
-            ctx.fillStyle = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        };
-
-        const fireworks = [];
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            fireworks.forEach((firework, index) => {
-                firework.sparks.forEach((spark, sparkIndex) => {
-                    spark.update();
-                    spark.draw();
-                    if (spark.life <= 0) firework.sparks.splice(sparkIndex, 1);
-                });
-                if (firework.sparks.length === 0) fireworks.splice(index, 1);
-            });
-            requestAnimationFrame(animate);
-        }
-
-        function createFirework() {
-            const firework = new Firework(Math.random() * canvas.width, Math.random() * canvas.height);
-            fireworks.push(firework);
-        }
-
-        // Trigger fireworks when the page loads
-        window.onload = function () {
-            for (let i = 0; i < 10; i++) {
-                createFirework();
-            }
-            animate();
-        };
-    </script>
-</body>
-</html>
+    <img src="
