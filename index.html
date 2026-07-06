@@ -45,8 +45,8 @@
         img {
             margin-top: 25px; 
             margin-bottom: 20px;
-            width: 15.6em;     /* Ingrandita del 30% rispetto a prima (da 12em a 15.6em) */
-            max-width: 85%;    /* Evita che l'immagine tocchi i bordi netti sui telefoni */
+            width: 23.4em;     /* Ingrandita del 50% (da 15.6em a 23.4em) */
+            max-width: 90%;    /* Permette all'immagine di allargarsi bene anche sui telefoni */
             height: auto;     
             position: relative;
             z-index: 10;       /* Forzo sopra il canvas */
@@ -69,7 +69,7 @@
                 font-size: 14px; 
             }
             img {
-                width: 13em;   /* Ingrandita in proporzione anche per mobile (da 10em a 13em) */
+                width: 19.5em;   /* Ingrandita in proporzione del 50% anche per mobile (da 13em a 19.5em) */
             }
         }
     </style>
@@ -139,3 +139,29 @@
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             fireworks.forEach((firework, index) => {
+                firework.sparks.forEach((spark, sparkIndex) => {
+                    spark.update();
+                    spark.draw();
+                    if (spark.life <= 0) firework.sparks.splice(sparkIndex, 1);
+                });
+                if (firework.sparks.length === 0) fireworks.splice(index, 1);
+            });
+            requestAnimationFrame(animate);
+        }
+
+        function createFirework() {
+            const firework = new Firework(Math.random() * canvas.width, Math.random() * canvas.height);
+            fireworks.push(firework);
+        }
+
+        window.onload = function () {
+            for (let i = 0; i < 10; i++) {
+                createFirework();
+            }
+            animate();
+            
+            setInterval(createFirework, 1500);
+        };
+    </script>
+</body>
+</html>
