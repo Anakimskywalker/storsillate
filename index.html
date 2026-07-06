@@ -7,157 +7,76 @@
     <style>
         body {
             display: flex;
-            flex-direction: column;  /* Stack elements vertically */
-            justify-content: center;  /* Center horizontally */
-            align-items: center;      /* Center vertically */
-            min-height: 100vh;        /* Full height of the viewport, allows scrolling if needed */
-            margin: 0;               /* Remove default margin */
-            padding: 20px;           /* Breathing room for content on mobile */
+            flex-direction: column;  /* Allinea gli elementi in verticale */
+            justify-content: center;  /* Centra orizzontalmente */
+            align-items: center;      /* Centra verticalmente */
+            min-height: 100vh;        /* Altezza minima pari allo schermo */
+            margin: 0;               
+            padding: 20px;           /* Spazio di sicurezza ai bordi */
             box-sizing: border-box;
-            background-color: #f0f0f0; /* Optional background color */
-            font-family: Arial, sans-serif; /* Optional font style */
-            position: relative; /* Set body position */
+            background-color: #f0f0f0; 
+            font-family: Arial, sans-serif; 
         }
         h1 {
-            font-size: 2.5em; /* Optional font size */
-            color: #F70D1A;    /* Optional text color */
-            position: relative; /* Keep h1 in normal flow */
-            z-index: 10;    /* Position above fireworks */
+            font-size: 2.5em; 
+            color: #F70D1A;    
+            position: relative; 
+            z-index: 10;    /* Forzo sopra il canvas */
             text-align: center;
+            margin: 10px 0;
         }
         h2 {
             font-size: 0.875em;
-            color: #0000FF;    /* Optional text color */
-            position: relative; /* Keep h1 in normal flow */
-            z-index: 10;    /* Position above fireworks */
+            color: #0000FF;    
+            position: relative; 
+            z-index: 10;    
             text-align: center;
+            margin: 10px 0;
         }
         h3 {
             font-size: 0.875em;
-            color: #000000;    /* Optional text color */
-            position: relative; /* Keep h1 in normal flow */
-            z-index: 10;    /* Position above fireworks */
+            color: #000000;    
+            position: relative; 
+            z-index: 10;    
             text-align: center;
+            margin: 5px 0;
         }
         
         img {
             margin-top: 25px; 
             margin-bottom: 20px;
-            /* Proporzionata al font di base */
-            width: 12em;       
-            max-width: 80%;   /* Impedisce all'immagine di uscire dallo schermo sui telefoni molto piccoli */
-            height: auto;     /* Mantiene le proporzioni dell'immagine */
+            width: 12em;       /* Proporzionata alla dimensione delle scritte */
+            max-width: 80%;    /* Non esce dagli schermi piccoli */
+            height: auto;     
             position: relative;
-            z-index: 10;    /* Position above fireworks */
+            z-index: 10;       /* Forzo sopra il canvas */
             border-radius: 8px; 
         }
+
         canvas {
-            position: absolute; /* Position canvas absolutely */
-            top: 0;             /* Align to the top */
-            left: 0;            /* Align to the left */
-            width: 100%;        /* Full width */
-            height: 100%;       /* Full height */
-            pointer-events: none; /* Allow clicks through canvas */
-            z-index: 1;        /* Position below content */
+            position: fixed;   /* FISSO sullo sfondo, non si sposta con lo scroll */
+            top: 0;             
+            left: 0;            
+            width: 100vw;        
+            height: 100vh;       
+            pointer-events: none; /* Rende il canvas trasparente ai click */
+            z-index: 1;        /* Sotto a tutto il testo */
         }
 
-        /* Regolazione per schermi piccoli */
+        /* Ottimizzazione per smartphone */
         @media (max-width: 480px) {
             body {
                 font-size: 14px; 
             }
             img {
-                width: 10em; /* Più piccola e bilanciata sui telefoni */
+                width: 10em; 
             }
         }
     </style>
 </head>
 <body>
+
     <h1>STORSILLO GYMBRO</h1>
     <h1>RISPETTO DI NESSUNO <br> PAURA DI TUTTI</h1>
     
     <h3>03/09/24 Sydney Caput Mundi</h3>
-    <h3>06/09/24 Cassano non è stupido è solo ignorante</h3>
-    <h3>30/08/24 è proprio vero sono un fallito, chiisà cosa penserà mia figlia di suo padre</h3>
-    
-    <h2>Please don't take my data</h2>
-    
-    <!-- L'immagine è stata spostata qui, sotto tutte le scritte -->
-    <img src="https://github.com/Anakimskywalker/storsillate/blob/main/storsilloshimself.png?raw=true" alt="Image">
-    
-    <!-- Fireworks Animation Script -->
-    <canvas id="fireworks"></canvas>
-    <script>
-        const canvas = document.getElementById('fireworks');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
-        });
-
-        function Firework(x, y) {
-            this.x = x;
-            this.y = y;
-            this.size = Math.random() * 5 + 2;
-            this.color = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
-            this.sparks = [];
-            for (let i = 0; i < 100; i++) {
-                this.sparks.push(new Spark(this));
-            }
-        }
-
-        function Spark(firework) {
-            this.x = firework.x;
-            this.y = firework.y;
-            this.size = Math.random() * 3 + 1;
-            this.speedX = (Math.random() - 0.5) * 10;
-            this.speedY = (Math.random() - 0.5) * 10;
-            this.life = 100;
-        }
-
-        Spark.prototype.update = function () {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            this.life--;
-        };
-
-        Spark.prototype.draw = function () {
-            ctx.fillStyle = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        };
-
-        const fireworks = [];
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            fireworks.forEach((firework, index) => {
-                firework.sparks.forEach((spark, sparkIndex) => {
-                    spark.update();
-                    spark.draw();
-                    if (spark.life <= 0) firework.sparks.splice(sparkIndex, 1);
-                });
-                if (firework.sparks.length === 0) fireworks.splice(index, 1);
-            });
-            requestAnimationFrame(animate);
-        }
-
-        function createFirework() {
-            const firework = new Firework(Math.random() * canvas.width, Math.random() * canvas.height);
-            fireworks.push(firework);
-        }
-
-        window.onload = function () {
-            for (let i = 0; i < 10; i++) {
-                createFirework();
-            }
-            animate();
-        };
-    </script>
-</body>
-</html>
