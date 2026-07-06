@@ -41,9 +41,9 @@
         }
         
         img {
-            margin-top: 20px; 
+            margin-top: 25px; 
             margin-bottom: 20px;
-            /* Usiamo le em per proporzionarla al font di base */
+            /* Proporzionata al font di base */
             width: 12em;       
             max-width: 80%;   /* Impedisce all'immagine di uscire dallo schermo sui telefoni molto piccoli */
             height: auto;     /* Mantiene le proporzioni dell'immagine */
@@ -61,11 +61,103 @@
             z-index: 1;        /* Position below content */
         }
 
-        /* Regolazione per schermi piccoli: rimpicciolisce leggermente i testi e l'immagine di conseguenza */
+        /* Regolazione per schermi piccoli */
         @media (max-width: 480px) {
             body {
                 font-size: 14px; 
             }
             img {
-                width: 10em; /* Diventa ancora più piccolina e bilanciata sui telefoni */
+                width: 10em; /* Più piccola e bilanciata sui telefoni */
             }
+        }
+    </style>
+</head>
+<body>
+    <h1>STORSILLO GYMBRO</h1>
+    <h1>RISPETTO DI NESSUNO <br> PAURA DI TUTTI</h1>
+    
+    <h3>03/09/24 Sydney Caput Mundi</h3>
+    <h3>06/09/24 Cassano non è stupido è solo ignorante</h3>
+    <h3>30/08/24 è proprio vero sono un fallito, chiisà cosa penserà mia figlia di suo padre</h3>
+    
+    <h2>Please don't take my data</h2>
+    
+    <!-- L'immagine è stata spostata qui, sotto tutte le scritte -->
+    <img src="https://github.com/Anakimskywalker/storsillate/blob/main/storsilloshimself.png?raw=true" alt="Image">
+    
+    <!-- Fireworks Animation Script -->
+    <canvas id="fireworks"></canvas>
+    <script>
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = Math.max(document.body.scrollHeight, window.innerHeight);
+        });
+
+        function Firework(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.color = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
+            this.sparks = [];
+            for (let i = 0; i < 100; i++) {
+                this.sparks.push(new Spark(this));
+            }
+        }
+
+        function Spark(firework) {
+            this.x = firework.x;
+            this.y = firework.y;
+            this.size = Math.random() * 3 + 1;
+            this.speedX = (Math.random() - 0.5) * 10;
+            this.speedY = (Math.random() - 0.5) * 10;
+            this.life = 100;
+        }
+
+        Spark.prototype.update = function () {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.life--;
+        };
+
+        Spark.prototype.draw = function () {
+            ctx.fillStyle = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        };
+
+        const fireworks = [];
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            fireworks.forEach((firework, index) => {
+                firework.sparks.forEach((spark, sparkIndex) => {
+                    spark.update();
+                    spark.draw();
+                    if (spark.life <= 0) firework.sparks.splice(sparkIndex, 1);
+                });
+                if (firework.sparks.length === 0) fireworks.splice(index, 1);
+            });
+            requestAnimationFrame(animate);
+        }
+
+        function createFirework() {
+            const firework = new Firework(Math.random() * canvas.width, Math.random() * canvas.height);
+            fireworks.push(firework);
+        }
+
+        window.onload = function () {
+            for (let i = 0; i < 10; i++) {
+                createFirework();
+            }
+            animate();
+        };
+    </script>
+</body>
+</html>
