@@ -45,8 +45,8 @@
         img {
             margin-top: 25px; 
             margin-bottom: 20px;
-            width: 12em;       /* Proporzionata alla dimensione delle scritte */
-            max-width: 80%;    /* Non esce dagli schermi piccoli */
+            width: 15.6em;     /* Ingrandita del 30% rispetto a prima (da 12em a 15.6em) */
+            max-width: 85%;    /* Evita che l'immagine tocchi i bordi netti sui telefoni */
             height: auto;     
             position: relative;
             z-index: 10;       /* Forzo sopra il canvas */
@@ -69,7 +69,7 @@
                 font-size: 14px; 
             }
             img {
-                width: 10em; 
+                width: 13em;   /* Ingrandita in proporzione anche per mobile (da 10em a 13em) */
             }
         }
     </style>
@@ -80,3 +80,62 @@
     <h1>RISPETTO DI NESSUNO <br> PAURA DI TUTTI</h1>
     
     <h3>03/09/24 Sydney Caput Mundi</h3>
+    <h3>06/09/24 Cassano non è stupido è solo ignorante</h3>
+    <h3>30/08/24 è proprio vero sono un fallito, chiisà cosa penserà mia figlia di suo padre</h3>
+    
+    <h2>Please don't take my data</h2>
+    
+    <img src="https://github.com/Anakimskywalker/storsillate/blob/main/storsilloshimself.png?raw=true" alt="Image">
+    
+    <canvas id="fireworks"></canvas>
+
+    <script>
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function Firework(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 2;
+            this.color = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
+            this.sparks = [];
+            for (let i = 0; i < 100; i++) {
+                this.sparks.push(new Spark(this));
+            }
+        }
+
+        function Spark(firework) {
+            this.x = firework.x;
+            this.y = firework.y;
+            this.size = Math.random() * 3 + 1;
+            this.speedX = (Math.random() - 0.5) * 10;
+            this.speedY = (Math.random() - 0.5) * 10;
+            this.life = 100;
+        }
+
+        Spark.prototype.update = function () {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.life--;
+        };
+
+        Spark.prototype.draw = function () {
+            ctx.fillStyle = 'hsl(' + Math.random() * 360 + ', 100%, 50%)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        };
+
+        const fireworks = [];
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            fireworks.forEach((firework, index) => {
